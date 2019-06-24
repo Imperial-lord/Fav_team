@@ -7,43 +7,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     public String username="",country="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        Spinner spinner = (Spinner) findViewById(R.id.fav1);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
-    public void storeandintent(View view)
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
     {
+        country = adapterView.getItemAtPosition(i).toString();
+
         EditText editText=(EditText)findViewById(R.id.user1);
         username=editText.getText().toString();
 
-        EditText favteam=(EditText)findViewById(R.id.fav1);
-        country=favteam.getText().toString();
 
-        String arr[]={"India","Austalia","New Zealand","South Africa", "West Indies", "England", "Pakistan","Bangladesh","Sri Lanka", "Afghanistan"};
-        int count=0;
-
-        for(int i=0;i<10;i++)
-        {
-            if (country.equals(arr[i]))
-            {
-                count++;
-                break;
-            }
-        }
-
-
-        if((username.equals("") || country.equals("")) || count==0 )
-        Toast.makeText(getApplicationContext(),"Invalid details!",Toast.LENGTH_SHORT).show();
+        if((username.equals("")))
+            Toast.makeText(getApplicationContext(),"Enter Username!",Toast.LENGTH_SHORT).show();
 
         else {
             Intent intent = new Intent(MainActivity.this, Pageofoptions.class);
@@ -51,5 +52,10 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("Country_I_need", country);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

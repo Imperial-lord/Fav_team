@@ -33,11 +33,8 @@ public class Pageofoptions extends AppCompatActivity {
                 Intent intent=new Intent(Pageofoptions.this, Webview.class);
                 intent.putExtra("Country",country);
                 startActivity(intent);
-
             }
         });
-
-
 
 
     }
